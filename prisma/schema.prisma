@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+    id          String  @id @default(auto()) @map("_id") @db.ObjectId
+    name String @unique
+    questionsIds String[] @db.ObjectId
+    questions questions [] @relation(fields: [questionsIds], references: [id])
+}
+
+model questions {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  categoriesIds String[] @db.ObjectId
+  categories category[] @relation(fields: [categoriesIds], references: [id])
+
+
+}
+
+model feedBack {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  type feedBackType
+  userId String @db.ObjectId
+  user user @relation(fields: [userId], references: [id])
+  sessionId String @db.ObjectId
+  session session @relation(fields: [sessionId], references: [id])
+}
+
+enum feedBackType {
+  BOM
+  RUIM
+  MEDIANO
+}
+
+model session {
+    id          String  @id @default(auto()) @map("_id") @db.ObjectId
+    feedBacks feedBack[]
+    usersIds String[] @db.ObjectId
+    users user[] @relation(fields: [usersIds], references: [id])
+}
+
+model user {
+    id          String  @id @default(auto()) @map("_id") @db.ObjectId
+    name String
+    feedbacks feedBack[]
+    sessionsIds String[] @db.ObjectId
+    sessiosn session[]  @relation(fields: [sessionsIds], references: [id])
+}
