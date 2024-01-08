@@ -19,7 +19,7 @@ interface categoryProps {
 }
 
 export default function AddModal() {
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const [text, setText] = React.useState("");
     const [selectCategory, setSelectCategory] = React.useState<categoryProps | null>(null);
     const [categorys, setCategory] = React.useState<categoryProps[]>([])
